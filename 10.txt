@@ -1,0 +1,191 @@
+-24.07.2025
+react lifecycle
+
+-Mounting
+-updating
+-Unmounting
+
+Mountig:
+constructor()
+static getDerivedStateFromProps()
+render()
+componentDidMount()
+
+import React,{Component} from "react";
+class LifeCycleFirst extends Component{
+    constructor (props){
+        super(props);
+        console.log("Constructor: Component Called...........");
+        this.state={
+            count:0
+        };
+    }
+    static getDerivedStateFromProps(props,state){
+    console.log("getDerivedStateFromProps() method called............")
+    return null;
+}
+render(){
+    console.log("render () method Called................")
+    return(
+        <div>
+            <h1>Life Cycle Methods of class</h1>
+            <h3>Count: {this.state.count}</h3>
+            <button onClick={()=>this.setState({count:this.state.count+1})}>Increment</button>
+        </div>
+    )
+}
+componentDidMount(){
+    console.log("componentDidMount() called..........")
+}
+
+}
+export default LifeCycleFirst;
+
+
+============================
+2. Updating:
+
+1. static getDerivedStateFromProps()
+2.shouldComponentUpdate()
+3.render()
+4.getsnapshotBeforeUpdate()
+5.componentDidUpdate()
+
+
+LifeCycleSecond.jsx
+
+import React,{Component} from "react";
+class LifeCycleSecond extends Component{
+     constructor (props){
+        super(props);
+       
+        this.state={
+            value:0
+        };
+         console.log("Constructor: Called...........");
+    }
+    static getDerivedStateFromProps(props,state){
+    console.log("getDerivedStateFromProps() method called............")
+    return null;
+}
+shouldComponentUpdate(nextProps,nextState){
+    console.log("shouldComponentUpdate() method called");
+    return true
+}
+
+getSnapshotBeforeUpdate(prevProps,prevState){
+    console.log("getsnapshotBeforeUpdate() method called")
+    return null;
+}
+componentDidUpdate(prevProps,prevState,snapshot){
+    console.log("componentDidUpdate() method called")
+}
+componentDidMount(){                //because its not there is updating so we should add
+    console.log("componentDidMount() called..........")
+}
+render(){
+    console.log("render () method executed................")
+    return (
+        <div>
+            <h1>Updating Phase:</h1>
+            <h2>Value:{this.state.value}</h2>
+            <button onClick={()=>this.setState({value: this.state.value+1})}>Increment</button>
+        </div>
+    )
+}
+}
+export default LifeCycleSecond;
+
+output:
+
+When Component Mounts (Initial Load)
+css
+Copy
+Edit
+Constructor: Called...........
+getDerivedStateFromProps() method called............
+render () method executed................
+componentDidMount() called..........
+When You Click the Increment Button (Value updates from 0 to 1)
+
+
+getDerivedStateFromProps() method called............
+shouldComponentUpdate() method called
+render () method executed................
+getsnapshotBeforeUpdate() method called
+componentDidUpdate() method called
+==============================
+3.unmounting phase:
+
+1.componentWillUnmount():perform cleanup of task
+
+
+ex:Timer: whn we run it will show timer
+whn we click toggle time will be hidden nd reset:
+TimerComponent.jsx
+
+
+import React,{Component} from "react";
+class TimerComponent extends Component{
+     constructor (props){
+        super(props);
+       
+        this.state={
+            seconds:0
+        };
+        console.log("constructor called")
+}
+componentDidMount(){
+    console.log("Timer component Mounted..........")
+    this.interval=setInterval(()=>{
+        this.setState({seconds:this.state.seconds+1});
+    },1000)
+}
+componentWillUnmount(){
+    console.log("component will unmount clearig interval")
+    clearInterval(this.interval)
+}
+render(){
+    return(
+        <div>
+            <h2>Timer Component</h2>
+            <h3>Timer:{this.state.seconds}</h3>
+        </div>
+    )
+}
+}
+export default TimerComponent
+
+LifeCycleThird.jsx:
+import React,{Component} from "react";
+import TimerComponent from "./TimerComponent";
+class LifeCycleThird extends Component{
+    constructor (props){
+        super(props);
+       
+        this.state={
+           showTimer:true
+        }
+    }
+    toggleTimer=()=>{
+        this.setState({showTimer: !this.state.showTimer})
+    };
+    render(){
+        return(
+            <div>
+                <button onClick={this.toggleTimer}>Toggle Timer</button>
+                {this.state.showTimer&& <TimerComponent/>}
+            </div>
+        )
+    }
+}
+export default LifeCycleThird
+
+o/p:
+constructor called
+Timer component Mounted..........
+component will unmount clearig interval
+Timer component Mounted.....
+
+after click toggle:
+component will unmount clearig interval
