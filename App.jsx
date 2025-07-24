@@ -17,14 +17,15 @@
 // import "bootstrap/dist/css/bootstrap.min.css"
 // import ArrayOfObjects from "./ArrayOfObjects";
 // import AddNewUser from "./AddNewUser";
-import LifeCycleFirst from "./life_cycle_component/LifeCycleFirst";
-import LifeCycleSecond from "./life_cycle_component/LifeCycleSecond";
-import LifeCycleThird from "./life_cycle_component/LifeCycleThird";
+// import LifeCycleFirst from "./life_cycle_component/LifeCycleFirst";
+// import LifeCycleSecond from "./life_cycle_component/LifeCycleSecond";
+// import LifeCycleThird from "./life_cycle_component/LifeCycleThird";
+import ChildComponent from "./assign_lc/ChildComponent";
 function App() {
   return (
     <div>
       
- <LifeCycleThird/>
+ <ChildComponent/>
 
     </div>
   );
