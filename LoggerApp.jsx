@@ -1,36 +1,39 @@
-import React,{Component} from "react";
-class LoggerApp extends Component{
-    constructor (props){
-        super(props);
-        console.log("ChildComponent: Constructor");
-        this.state={
-            count:0
-        };
-    }
-    componentDidMount(){
-    console.log("ChildComponent: Component Did Mount")
-}
-shouldComponentUpdate(nextProps,nextState){
-    console.log("ChildComponent: Should Component Update");
-    return  true          
-}
-componentDidUpdate(prevProps,prevState,snapshot){
-    console.log("ChildComponent: Component Did Update")
-}
-render(){
-    console.log("render () method Called................")
-    return(
-        <div>
-            <h1>React Lifecycle Demo</h1>
-            <h3>Count: {this.state.count}</h3>
-            <button onClick={()=>this.setState({count:this.state.count+1})}>Increment</button>
-        </div>
-    )
-}
-componentWillUnmount(){
-    console.log("ChildComponent: Component Will Unmount")
-    clearInterval(this.interval)
+import React, { Component } from "react";
+import ChildComponent from "./ChildComponent";
+
+class ParentComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showChild: true,
+      appState: Math.random()
+    };
+    console.log("ParentComponent: Constructor");
+  }
+
+  toggleChild = () => {
+    this.setState({ showChild: !this.state.showChild });
+  };
+
+  componentDidMount() {
+    console.log("ParentComponent: Component Did Mount");
+    this.interval = setInterval(() => {
+      this.setState({ appState: Math.random() });
+    }, 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  render() {
+    return (
+      <div>
+        <button onClick={this.toggleChild}>Toggle Child Component</button>
+        {this.state.showChild && <ChildComponent />}
+      </div>
+    );
+  }
 }
 
-}
-export default LoggerApp
+export default ParentComponent;
